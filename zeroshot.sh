@@ -2,15 +2,13 @@
 
 # custom config
 
-# Enter the path to your dataset
-DATASET=$1
+DATASET='data/breast_tumors'
 
 python saliency_maps/generate_saliency_maps.py \
 --input-path ${DATASET}/images \
 --output-path saliency_map_outputs/${DATASET}/masks \
 --val-path ${DATASET}/val_images \
 --model-name BiomedCLIP \
---finetuned \
 --hyper-opt \
 --val-path ${DATASET}/val_images
 

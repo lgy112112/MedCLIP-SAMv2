@@ -32,7 +32,7 @@ def calculate_dice_coefficient(mask1, mask2):
 # Function to evaluate a model on a sample image and calculate the Dice score
 def evaluate_on_sample(model, processor, tokenizer, text, image_paths, args):
     dice_scores = []  # Store Dice scores for each image
-    for image_id in tqdm(image_paths):  # Iterate through images
+    for image_id in image_paths:  # Iterate through images
         try:
             # Open and preprocess the image
             image = Image.open(f"{args.val_path}/{image_id}").convert('RGB')
@@ -133,6 +133,7 @@ def main(args):
         model = AutoModel.from_pretrained("./saliency_maps/model", trust_remote_code=True).to(args.device)
         processor = AutoProcessor.from_pretrained("chuhac/BiomedCLIP-vit-bert-hf", trust_remote_code=True)
         tokenizer = AutoTokenizer.from_pretrained("chuhac/BiomedCLIP-vit-bert-hf", trust_remote_code=True)
+        print("Loaded finetuned BiomedCLIP model")
     elif(args.model_name == "BiomedCLIP" and not args.finetuned):
         model = AutoModel.from_pretrained("chuhac/BiomedCLIP-vit-bert-hf", trust_remote_code=True).to(args.device)
         processor = AutoProcessor.from_pretrained("chuhac/BiomedCLIP-vit-bert-hf", trust_remote_code=True)
@@ -145,7 +146,9 @@ def main(args):
         model = AutoModel.from_pretrained("./model", trust_remote_code=True).to(args.device)
 
     # Get user input for the text to generate saliency maps
-    text = str(input("Enter the text: "))
+    # Set a predefined text for generating saliency maps
+    text = "breast tumor"
+    print(f'the prompt is: {text}')
 
     # Perform hyperparameter optimization if required
     if(args.hyper_opt):
